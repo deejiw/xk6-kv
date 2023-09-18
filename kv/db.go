@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	bolt "go.etcd.io/bbolt"
 )
@@ -44,7 +45,7 @@ func (db *db) open() error {
 		return nil
 	}
 
-	handler, err := bolt.Open(DefaultKvPath, 0600, nil)
+	handler, err := bolt.Open(DefaultKvPath, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		return err
 	}

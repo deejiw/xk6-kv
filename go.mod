@@ -1,4 +1,4 @@
-module github.com/oleiade/xk6-kv
+module github.com/deejiw/xk6-kv
 
 go 1.21
 
