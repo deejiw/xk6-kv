@@ -1,6 +1,7 @@
 package kv
 
 import (
+	"fmt"
 	"sync"
 	"sync/atomic"
 
@@ -43,10 +44,18 @@ func (db *db) open() error {
 		return nil
 	}
 
-	handler, err := bolt.Open(DefaultKvPath, 0o600, nil)
+	handler, err := bolt.Open(DefaultKvPath, 0600, nil)
 	if err != nil {
 		return err
 	}
+
+	handler.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte(DefaultKvBucket))
+		if err != nil {
+			return fmt.Errorf("create bucket: %s", err)
+		}
+		return nil
+	})
 
 	db.handle = handler
 	db.opened.Store(true)

@@ -70,9 +70,7 @@ func (mi *ModuleInstance) OpenKv() *goja.Object {
 		return nil
 	}
 
-	kv := NewKV(mi.vu, mi.rm.db)
-	kv.bucket = []byte(DefaultKvBucket)
-	mi.kv = kv
+	mi.kv = NewKV(mi.vu, mi.rm.db)
 
 	return mi.vu.Runtime().ToValue(mi.kv).ToObject(mi.vu.Runtime())
 }
